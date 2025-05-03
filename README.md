@@ -3,16 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Asistencia</title>
-    <style>
-        /* General styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
+    <title>Sistema de Asistencia ELYON YIREH</title>
+<style>
+        :root {
+            --primary: #2c73d2;
+            --primary-dark: #1c5eb0;
+            --primary-light: #e6f0ff;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --light: #f5f5f5;
+            --dark: #333;
+            --gray: #555;
+            --gray-light: #ddd;
+            --white: #fff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            font-size: 16px;
         }
         
         .container {
@@ -21,41 +41,67 @@
             padding: 20px;
         }
         
-        h1, h2, h3, h4 {
-            color: #2c73d2;
-            margin-top: 0;
+        .hidden {
+            display: none;
         }
         
-        /* Auth styles */
+        /* Auth Styles */
         .auth-container {
             max-width: 500px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 80px auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .auth-title {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .auth-subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--gray);
+            font-size: 16px;
         }
         
         .auth-options {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--gray-light);
         }
         
         .auth-option {
-            padding: 10px 20px;
+            flex: 1;
+            text-align: center;
+            padding: 16px 10px;
             cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .auth-option:hover {
-            background: #f0f0f0;
+            color: var(--gray);
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
         }
         
         .auth-option.active {
-            border-bottom: 2px solid #2c73d2;
-            font-weight: bold;
-            color: #2c73d2;
+            color: var(--primary);
+        }
+        
+        .auth-option.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px 3px 0 0;
         }
         
         .auth-form {
@@ -64,181 +110,506 @@
         
         .auth-form.active {
             display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 24px;
+            position: relative;
         }
         
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 15px;
         }
         
         input, select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 14px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 115, 210, 0.15);
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 42px;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+        
+        .toggle-password:hover {
+            color: var(--primary);
         }
         
         button {
-            background: #2c73d2;
-            color: white;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 14px 24px;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
+            font-weight: 600;
             font-size: 16px;
-            transition: background 0.3s;
+            width: 100%;
+            margin-top: 16px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
         
         button:hover {
-            background: #1e5ba8;
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(44, 115, 210, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 6px rgba(44, 115, 210, 0.1);
         }
         
         .btn-secondary {
-            background: #6c757d;
+            background-color: var(--secondary);
         }
         
         .btn-secondary:hover {
-            background: #5a6268;
+            background-color: #5a6268;
+            box-shadow: 0 6px 12px rgba(108, 117, 125, 0.2);
         }
         
         .btn-danger {
-            background: #dc3545;
-            padding: 5px 10px;
+            background-color: var(--danger);
+            padding: 8px 14px;
             font-size: 14px;
+            width: auto;
         }
         
         .btn-danger:hover {
-            background: #c82333;
+            background-color: #c82333;
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.2);
+        }
+        
+        .btn-edit {
+            background-color: var(--success);
+            padding: 8px 14px;
+            font-size: 14px;
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .btn-edit:hover {
+            background-color: #218838;
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.2);
         }
         
         /* Notification */
         .notification {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 10px;
+            text-align: center;
             display: none;
+            font-weight: 600;
+            animation: slideDown 0.4s ease;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         
         .notification.success {
             background-color: #d4edda;
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border-left: 4px solid #28a745;
         }
         
         .notification.error {
             background-color: #f8d7da;
             color: #721c24;
-            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
         }
         
-        /* Monitor page */
+        /* Monitor Page */
         .monitor-header {
             display: flex;
             justify-content: space-between;
-            background: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            align-items: center;
+            background-color: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
         }
         
         .search-container {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
         .search-container input {
             flex: 1;
-            margin-right: 10px;
+            margin-right: 0;
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .search-container button {
+            width: auto;
+            border-radius: 0 10px 10px 0;
+            margin-top: 0;
         }
         
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background: #fff;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 24px;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            border-radius: 12px;
+            overflow: hidden;
         }
         
         th, td {
-            padding: 12px 15px;
+            padding: 16px 20px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
         }
         
         th {
-            background-color: #f8f9fa;
-            font-weight: bold;
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+            white-space: nowrap;
         }
         
-        tr:hover {
-            background-color: #f5f5f5;
+        tr:not(:last-child) td {
+            border-bottom: 1px solid var(--gray-light);
         }
         
-        .hidden {
-            display: none;
+        tbody tr {
+            transition: var(--transition);
         }
         
-        /* Admin page */
+        tbody tr:hover {
+            background-color: rgba(44, 115, 210, 0.05);
+        }
+        
+        /* Admin Page */
         .dashboard-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 36px;
         }
         
         .card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            background-color: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
             text-align: center;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
-        .card .number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2c73d2;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+        
+        .number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
         }
         
         .tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
+            margin-bottom: 24px;
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
         }
         
         .tab {
-            padding: 10px 20px;
+            padding: 16px 24px;
             cursor: pointer;
-            transition: background 0.3s;
+            flex: 1;
+            text-align: center;
+            color: var(--gray);
+            font-weight: 600;
+            transition: var(--transition);
         }
         
-        .tab:hover {
-            background: #f0f0f0;
+        .tab:hover:not(.active) {
+            background-color: rgba(44, 115, 210, 0.05);
         }
         
         .tab.active {
-            border-bottom: 2px solid #2c73d2;
-            font-weight: bold;
-            color: #2c73d2;
+            background-color: var(--primary);
+            color: var(--white);
         }
         
         .tab-content {
             display: none;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
         }
         
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tab-content h2 {
+            margin-bottom: 24px;
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 22px;
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close-modal:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .monitor-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-container input {
+                border-radius: 10px;
+                border-right: 2px solid var(--gray-light);
+                margin-bottom: 10px;
+            }
+            
+            .search-container button {
+                border-radius: 10px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 0 0 50%;
+                padding: 14px;
+            }
+            
+            .auth-container {
+                padding: 30px 20px;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Login Specific Styles */
+        .login-container {
+            max-width: 450px;
+            margin: 80px auto;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .login-container .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .login-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            padding-right: 46px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 115, 210, 0.15);
+        }
+
+        .login-container .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 42px;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .login-container .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(44, 115, 210, 0.2);
+        }
+
+        .login-container button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 6px rgba(44, 115, 210, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -246,6 +617,8 @@
     <!-- Auth Container (Login/Register) -->
     <div id="auth-container" class="container">
         <div class="auth-container">
+            <h1 class="auth-title">𝑬𝑳𝒀𝑶𝑵 𝒀𝑰𝑹𝑬𝑯</h1>
+            <p class="auth-subtitle">Portal Institucional</p>
             <div class="auth-options">
                 <div class="auth-option active" data-form="login-form">Iniciar Sesión</div>
                 <div class="auth-option" data-form="register-form">Registrarse</div>
@@ -260,10 +633,12 @@
                     <label for="username">Usuario:</label>
                     <input type="text" id="username" name="username" required>
                 </div>
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
+                <div class="form-group" style="position: relative;">
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required style="width: 100%;">
+    <span id="toggle-login-password" style="position: absolute; right: 10px; top: 35px; cursor: pointer;">👁️</span>
+</div>
+
                 <div class="form-group">
                     <label for="user-type">Tipo de Usuario:</label>
                     <select id="user-type" name="user-type">
@@ -287,27 +662,20 @@
                 </div>
                 <div class="form-group">
                     <label for="reg-phone">Número de Teléfono:</label>
-                    <input type="tel" id="reg-phone" name="reg-phone" required>
+                    <input type="tel" id="reg-phone" name="reg-phone" placeholder="3XXXXXXXXX" required>
                 </div>
                 <div class="form-group">
                     <label for="reg-career">Carrera:</label>
                     <select id="reg-career" name="reg-career" required>
                         <option value="">Seleccione una carrera</option>
-                        <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                        <option value="Gastronomía">Gastronomía</option>
-                        <option value="Medicina">Medicina</option>
                         <option value="Derecho">Derecho</option>
-                        <option value="Administración de Empresas">Administración de Empresas</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="reg-semester">Semestre:</label>
-                    <select id="reg-semester" name="reg-semester" required>
-                        <option value="">Seleccione un semestre</option>
-                        <option value="1">Semestre 1</option>
-                        <option value="2">Semestre 2</option>
-                        <option value="3">Semestre 3</option>
-                        <option value="4">Semestre 4</option>
+                        <option value="Arquitectura">Arquitectura</option>
+                        <option value="Contabilidad">Contabilidad</option>
+                        <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                        <option value="Medicina">Medicina</option>
+                        <option value="Psicología">Psicología</option>
+                        <option value="Ingeniería Civil">Ingeniería Civil</option>
+                        <option value="Economía">Economía</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -315,14 +683,39 @@
                     <input type="text" id="reg-module" name="reg-module" required>
                 </div>
                 <div class="form-group">
+                    <label for="reg-horario">Horario:</label>
+                    <select id="reg-horario" name="reg-horario" required>
+                        <option value="">Seleccione un horario</option>
+                        <option value="08:00 - 10:00">08:00 - 10:00</option>
+                        <option value="10:00 - 12:00">10:00 - 12:00</option>
+                        <option value="12:00 - 14:00">12:00 - 14:00</option>
+                        <option value="14:00 - 16:00">14:00 - 16:00</option>
+                    </select>
+                </div>
+<div class="form-group">
+    <label for="reg-semester">Semestre:</label>
+    <select id="reg-semester" name="reg-semester" required>
+        <option value="">Seleccione un semestre</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+</div>
+                <div class="form-group">
                     <label for="reg-username">Usuario:</label>
                     <input type="text" id="reg-username" name="reg-username" required>
                 </div>
-                <div class="form-group">
-                    <label for="reg-password">Contraseña:</label>
-                    <input type="password" id="reg-password" name="reg-password" required>
-                </div>
+                <div class="form-group" style="position: relative;">
+    <label for="reg-password">Contraseña:</label>
+    <input type="password" id="reg-password" name="reg-password" required style="width: 100%;">
+    <span id="toggle-password" style="position: absolute; right: 10px; top: 35px; cursor: pointer;">👁️</span>
+</div>
+
                 <button id="register-btn">Registrarse</button>
+<div id="register-notification" class="notification"></div>
+
+
             </div>
         </div>
     </div>
@@ -336,8 +729,9 @@
             <div class="monitor-info">
                 <h3 id="monitor-name">Nombre del Monitor</h3>
                 <p id="monitor-career">Carrera</p>
-                <p id="monitor-semester">Semestre</p>
                 <p id="monitor-module">Módulo</p>
+                <p id="monitor-horario">Horario</p>
+                <p id="monitor-semester">Semestre</p>
             </div>
             <div class="monitor-schedule">
                 <p id="monitor-date">Fecha: </p>
@@ -379,17 +773,27 @@
             </div>
             <div class="form-group">
                 <label for="new-student-phone">Número de Teléfono:</label>
-                <input type="tel" id="new-student-phone">
+                <input type="tel" id="new-student-phone" placeholder="3XXXXXXXXX">
             </div>
             <div class="form-group">
                 <label for="new-student-career">Carrera:</label>
                 <select id="new-student-career">
                     <option value="">Seleccione una carrera</option>
-                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                    <option value="Gastronomía">Gastronomía</option>
-                    <option value="Medicina">Medicina</option>
                     <option value="Derecho">Derecho</option>
-                    <option value="Administración de Empresas">Administración de Empresas</option>
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Economía">Economía</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="new-student-status">Estado:</label>
+                <select id="new-student-status">
+                    <option value="matriculado">Matriculado</option>
+                    <option value="no-matriculado">No Matriculado</option>
                 </select>
             </div>
             <button id="add-student-btn">Agregar Estudiante</button>
@@ -398,6 +802,50 @@
                 <button id="save-attendance-btn">Guardar Asistencia</button>
                 <button id="monitor-logout-btn" class="btn-secondary">Cerrar Sesión</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Student Edit Modal -->
+    <div id="edit-student-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Estudiante</h2>
+                <span class="close-modal" id="close-edit-student">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="edit-student-doc">Documento:</label>
+                <input type="text" id="edit-student-doc" readonly>
+            </div>
+            <div class="form-group">
+                <label for="edit-student-name">Nombre:</label>
+                <input type="text" id="edit-student-name">
+            </div>
+            <div class="form-group">
+                <label for="edit-student-phone">Número de Teléfono:</label>
+                <input type="tel" id="edit-student-phone" placeholder="3XXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label for="edit-student-career">Carrera:</label>
+                <select id="edit-student-career">
+                    <option value="">Seleccione una carrera</option>
+                    <option value="Derecho">Derecho</option>
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Economía">Economía</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="edit-student-status">Estado:</label>
+                <select id="edit-student-status">
+                    <option value="matriculado">Matriculado</option>
+                    <option value="no-matriculado">No Matriculado</option>
+                </select>
+            </div>
+            <button id="save-edit-student-btn">Guardar Cambios</button>
         </div>
     </div>
 
@@ -429,68 +877,63 @@
             <div class="tab active" data-tab="attendance-data">Datos de Asistencia</div>
             <div class="tab" data-tab="statistics">Estadísticas</div>
             <div class="tab" data-tab="reports">Informes</div>
+            <div class="tab" data-tab="students-mgmt">Gestión de Estudiantes</div>
             <div class="tab" data-tab="user-management">Gestión de Usuarios</div>
         </div>
         
-        <div id="attendance-data" class="tab-content active">
-            <h2>Datos de Asistencia</h2>
-            
-            <div class="form-group">
-                <label>Filtrar por:</label>
-                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;">
-                        <label for="filter-date">Fecha:</label>
-                        <input type="date" id="filter-date">
-                    </div>
-                    <div style="flex: 1;">
-                        <label for="filter-career">Carrera:</label>
-                        <select id="filter-career">
-                            <option value="">Todas</option>
-                            <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                            <option value="Gastronomía">Gastronomía</option>
-                            <option value="Medicina">Medicina</option>
-                            <option value="Derecho">Derecho</option>
-                            <option value="Administración de Empresas">Administración de Empresas</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1;">
-                        <label for="filter-monitor">Monitor:</label>
-                        <select id="filter-monitor">
-                            <option value="">Todos</option>
-                            <!-- Monitor options will be loaded here -->
-                        </select>
-                    </div>
-                    <div style="flex: 1;">
-                        <label for="filter-status">Estado:</label>
-                        <select id="filter-status">
-                            <option value="">Todos</option>
-                            <option value="matriculado">Matriculado</option>
-                            <option value="no-matriculado">No Matriculado</option>
-                        </select>
-                    </div>
-                </div>
-                <button id="apply-filters-btn">Aplicar Filtros</button>
-            </div>
-            
-            <table id="admin-attendance-table">
-                <thead>
-                    <tr>
-                        <th>Documento</th>
-                        <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th>Carrera</th>
-                        <th>Monitor</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estado</th>
-                        <th>Asistencia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Attendance data will be loaded here -->
-                </tbody>
-            </table>
+ <div id="attendance-data" class="tab-content active">
+    <h2>Datos de Asistencia</h2>
+    <div class="form-group">
+        <label>Filtrar por:</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+            <input type="date" id="filter-date" style="flex: 1;">
+            <select id="filter-career" style="flex: 1;">
+                <option value="">Todas las carreras</option>
+                <option value="Derecho">Derecho</option>
+                <option value="Arquitectura">Arquitectura</option>
+                <option value="Contabilidad">Contabilidad</option>
+                <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                <option value="Medicina">Medicina</option>
+                <option value="Psicología">Psicología</option>
+                <option value="Ingeniería Civil">Ingeniería Civil</option>
+                <option value="Economía">Economía</option>
+            </select>
+            <select id="filter-status" style="flex: 1;">
+                <option value="">Todos los estados</option>
+                <option value="matriculado">Matriculado</option>
+                <option value="no-matriculado">No Matriculado</option>
+            </select>
+            <select id="filter-attendance" style="flex: 1;">
+                <option value="">Todas las asistencias</option>
+                <option value="presente">Presente</option>
+                <option value="ausente">Ausente</option>
+            </select>
+            <input type="text" id="filter-doc" placeholder="Buscar por documento o nombre" style="flex: 2;">
         </div>
+        <button id="apply-filters-btn">Aplicar Filtros</button>
+    </div>
+
+    <table id="admin-attendance-table">
+        <thead>
+            <tr>
+                <th>Documento</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Carrera</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Asistencia</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Attendance data will be loaded here -->
+        </tbody>
+    </table>
+</div>
+
+           
         
         <div id="statistics" class="tab-content">
             <h2>Estadísticas</h2>
@@ -498,12 +941,6 @@
                 <div style="flex: 1; min-width: 300px;">
                     <h3>Asistencia por Carrera</h3>
                     <div id="career-chart" style="height: 300px; background: #f9f9f9;">
-                        <!-- Chart will be rendered here -->
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>Asistencia por Monitor</h3>
-                    <div id="monitor-chart" style="height: 300px; background: #f9f9f9;">
                         <!-- Chart will be rendered here -->
                     </div>
                 </div>
@@ -525,8 +962,6 @@
                     <option value="weekly">Asistencia Semanal</option>
                     <option value="monthly">Asistencia Mensual</option>
                     <option value="by-career">Asistencia por Carrera</option>
-                    <option value="by-monitor">Asistencia por Monitor</option>
-                    <option value="by-semester">Asistencia por Semestre</option>
                     <option value="unregistered">Estudiantes No Matriculados</option>
                 </select>
             </div>
@@ -542,18 +977,14 @@
                 <label for="report-career">Carrera (opcional):</label>
                 <select id="report-career">
                     <option value="">Todas</option>
-                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                    <option value="Gastronomía">Gastronomía</option>
-                    <option value="Medicina">Medicina</option>
                     <option value="Derecho">Derecho</option>
-                    <option value="Administración de Empresas">Administración de Empresas</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="report-monitor">Monitor (opcional):</label>
-                <select id="report-monitor">
-                    <option value="">Todos</option>
-                    <!-- Monitor options will be loaded here -->
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Economía">Economía</option>
                 </select>
             </div>
             <button id="generate-report-btn">Generar Informe</button>
@@ -562,6 +993,67 @@
             <div id="report-preview" style="margin-top: 20px;">
                 <!-- Report preview will be displayed here -->
             </div>
+        </div>
+        
+        <div id="students-mgmt" class="tab-content">
+            <h2>Gestión de Estudiantes</h2>
+            <div class="search-container">
+                <input type="text" id="admin-student-search" placeholder="Buscar por nombre o número de documento">
+                <button id="admin-search-btn">Buscar</button>
+            </div>
+            <table id="admin-students-table">
+                <thead>
+    <tr>
+        <th>Documento</th>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Carrera</th>
+        <th>Estado</th>
+        <th>Monitor</th> <!-- NUEVO -->
+        <th>Acciones</th>
+    </tr>
+</thead>
+
+                <tbody>
+                    <!-- Students data will be loaded here -->
+                </tbody>
+            </table>
+            
+            <h3>Agregar Estudiante</h3>
+            <div class="form-group">
+                <label for="admin-new-student-doc">Documento:</label>
+                <input type="text" id="admin-new-student-doc">
+            </div>
+            <div class="form-group">
+                <label for="admin-new-student-name">Nombre:</label>
+                <input type="text" id="admin-new-student-name">
+            </div>
+            <div class="form-group">
+                <label for="admin-new-student-phone">Número de Teléfono:</label>
+                <input type="tel" id="admin-new-student-phone" placeholder="3XXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label for="admin-new-student-career">Carrera:</label>
+                <select id="admin-new-student-career">
+                    <option value="">Seleccione una carrera</option>
+                    <option value="Derecho">Derecho</option>
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Economía">Economía</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="admin-new-student-status">Estado:</label>
+                <select id="admin-new-student-status">
+                    <option value="matriculado">Matriculado</option>
+                    <option value="no-matriculado">No Matriculado</option>
+                </select>
+            </div>
+            <button id="admin-add-student-btn">Agregar Estudiante</button>
         </div>
         
         <div id="user-management" class="tab-content">
@@ -573,32 +1065,31 @@
                         <th>Nombre</th>
                         <th>Tipo</th>
                         <th>Carrera</th>
-                        <th>Semestre</th>
                         <th>Módulo</th>
-                        <th>Último Acceso</th>
-                        <th>Acciones</th>
+                        <th>Horario</th>
+                       <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Users will be loaded here -->
+                    <!-- Users data will be loaded here -->
                 </tbody>
             </table>
             
             <h3>Agregar Usuario</h3>
             <div class="form-group">
-                <label for="new-user-username">Usuario:</label>
-                <input type="text" id="new-user-username">
+                <label for="new-user-fullname">Nombre Completo:</label>
+                <input type="text" id="new-user-fullname">
             </div>
             <div class="form-group">
-                <label for="new-user-name">Nombre Completo:</label>
-                <input type="text" id="new-user-name">
+                <label for="new-user-id">Número de Identificación:</label>
+                <input type="text" id="new-user-id">
             </div>
             <div class="form-group">
-                <label for="new-user-password">Contraseña:</label>
-                <input type="password" id="new-user-password">
+                <label for="new-user-phone">Número de Teléfono:</label>
+                <input type="tel" id="new-user-phone" placeholder="3XXXXXXXXX">
             </div>
             <div class="form-group">
-                <label for="new-user-type">Tipo:</label>
+                <label for="new-user-type">Tipo de Usuario:</label>
                 <select id="new-user-type">
                     <option value="monitor">Monitor</option>
                     <option value="admin">Administrador</option>
@@ -608,26 +1099,37 @@
                 <label for="new-user-career">Carrera:</label>
                 <select id="new-user-career">
                     <option value="">Seleccione una carrera</option>
-                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                    <option value="Gastronomía">Gastronomía</option>
-                    <option value="Medicina">Medicina</option>
                     <option value="Derecho">Derecho</option>
-                    <option value="Administración de Empresas">Administración de Empresas</option>
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Economía">Economía</option>
                 </select>
             </div>
             <div class="form-group monitor-fields">
-                <label for="new-user-semester">Semestre:</label>
-                <select id="new-user-semester">
-                    <option value="">Seleccione un semestre</option>
-                    <option value="1">Semestre 1</option>
-                    <option value="2">Semestre 2</option>
-                    <option value="3">Semestre 3</option>
-                    <option value="4">Semestre 4</option>
-                </select>
-            </div>
-            <div class="form-group monitor-fields">
-                <label for="new-user-module">Módulo:</label>
+                <label for="new-user-module">Nombre del Módulo:</label>
                 <input type="text" id="new-user-module">
+            </div>
+            <div class="form-group monitor-fields">
+                <label for="new-user-horario">Horario:</label>
+                <select id="new-user-horario">
+                    <option value="">Seleccione un horario</option>
+                    <option value="08:00 - 10:00">08:00 - 10:00</option>
+                    <option value="10:00 - 12:00">10:00 - 12:00</option>
+                    <option value="12:00 - 14:00">12:00 - 14:00</option>
+                    <option value="14:00 - 16:00">14:00 - 16:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="new-user-username">Usuario:</label>
+                <input type="text" id="new-user-username">
+            </div>
+            <div class="form-group">
+                <label for="new-user-password">Contraseña:</label>
+                <input type="password" id="new-user-password">
             </div>
             <button id="add-user-btn">Agregar Usuario</button>
         </div>
@@ -636,1259 +1138,1254 @@
             <button id="admin-logout-btn" class="btn-secondary">Cerrar Sesión</button>
         </div>
     </div>
-
-    <!-- Google Sheets API Integration (commented out, to be implemented) -->
-    <!-- <script src="https://apis.google.com/js/api.js"></script> -->
-
-    <!-- Load Google Charts -->
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
     
+    <!-- User Edit Modal -->
+    <div id="edit-user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Usuario</h2>
+                <span class="close-modal" id="close-edit-user">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="edit-user-username">Usuario:</label>
+                <input type="text" id="edit-user-username" readonly>
+            </div>
+            <div class="form-group">
+                <label for="edit-user-fullname">Nombre Completo:</label>
+                <input type="text" id="edit-user-fullname">
+            </div>
+            <div class="form-group">
+                <label for="edit-user-id">Número de Identificación:</label>
+                <input type="text" id="edit-user-id">
+            </div>
+            <div class="form-group">
+                <label for="edit-user-phone">Número de Teléfono:</label>
+                <input type="tel" id="edit-user-phone" placeholder="3XXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label for="edit-user-type">Tipo de Usuario:</label>
+                <select id="edit-user-type">
+                    <option value="monitor">Monitor</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </div>
+            <div class="form-group edit-monitor-fields">
+                <label for="edit-user-career">Carrera:</label>
+                <select id="edit-user-career">
+                    <option value="">Seleccione una carrera</option>
+                    <option value="Derecho">Derecho</option>
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Economía">Economía</option>
+                </select>
+            </div>
+            <div class="form-group edit-monitor-fields">
+                <label for="edit-user-module">Nombre del Módulo:</label>
+                <input type="text" id="edit-user-module">
+            </div>
+            <div class="form-group edit-monitor-fields">
+                <label for="edit-user-horario">Horario:</label>
+                <select id="edit-user-horario">
+                    <option value="">Seleccione un horario</option>
+                    <option value="08:00 - 10:00">08:00 - 10:00</option>
+                    <option value="10:00 - 12:00">10:00 - 12:00</option>
+                    <option value="12:00 - 14:00">12:00 - 14:00</option>
+                    <option value="14:00 - 16:00">14:00 - 16:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="edit-user-password">Nueva Contraseña (dejar en blanco para mantener la actual):</label>
+                <input type="password" id="edit-user-password">
+            </div>
+            <button id="save-edit-user-btn">Guardar Cambios</button>
+        </div>
+    </div>
+<!-- JavaScript -->
     <script>
-       // Script corregido para el sistema de gestión de asistencia
+        // Configuración de Firebase
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
+        import { getDatabase, ref, set, get, child, update, remove, onValue } from "firebase/database";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBCO6nEnKWjucuZbZsSnZJG95OkAXMXXXs",
+          authDomain: "portalinstitucional-c35c6.firebaseapp.com",
+          databaseURL: "https://portalinstitucional-c35c6-default-rtdb.firebaseio.com",
+          projectId: "portalinstitucional-c35c6",
+          storageBucket: "portalinstitucional-c35c6.firebasestorage.app",
+          messagingSenderId: "1096756653839",
+          appId: "1:1096756653839:web:ee2107a77e8183c453d87a",
+          measurementId: "G-58XKMNPH2B"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar necesarias librerías para gráficos
-    loadScripts();
-    
-    // Referencias a elementos DOM
-    initializeDOMReferences();
-    
-    // Mostrar formulario de inicio de sesión por defecto
-    authOptions[0].click();
-    
-    // Configurar event listeners
-    setupEventListeners();
-});
+        // Global variables
+        let currentUser = null;
+        let students = [];
+        let attendanceData = [];
+        let users = [];
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('apply-filters-btn').addEventListener('click', handleApplyFilters);
 
-// Cargar scripts necesarios dinámicamente
-function loadScripts() {
-    // Cargar Google Charts
-    const googleChartsScript = document.createElement('script');
-    googleChartsScript.src = 'https://www.gstatic.com/charts/loader.js';
-    googleChartsScript.onload = function() {
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(initCharts);
-    };
-    document.head.appendChild(googleChartsScript);
-    
-    // Cargar Chart.js
-    const chartJsScript = document.createElement('script');
-    chartJsScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-    document.head.appendChild(chartJsScript);
-}
-
-// Inicializar referencias a elementos DOM
-function initializeDOMReferences() {
-    // DOM elements
-    window.authContainer = document.getElementById('auth-container');
-    window.monitorPage = document.getElementById('monitor-page');
-    window.adminPage = document.getElementById('admin-page');
-    
-    // Auth elements
-    window.authOptions = document.querySelectorAll('.auth-option');
-    window.authForms = document.querySelectorAll('.auth-form');
-    window.loginBtn = document.getElementById('login-btn');
-    window.registerBtn = document.getElementById('register-btn');
-    window.authNotification = document.getElementById('auth-notification');
-    
-    // Monitor page elements
-    window.monitorName = document.getElementById('monitor-name');
-    window.monitorCareer = document.getElementById('monitor-career');
-    window.monitorSemester = document.getElementById('monitor-semester');
-    window.monitorModule = document.getElementById('monitor-module');
-    window.monitorDate = document.getElementById('monitor-date');
-    window.monitorTime = document.getElementById('monitor-time');
-    window.studentSearch = document.getElementById('student-search');
-    window.searchBtn = document.getElementById('search-btn');
-    window.studentsTable = document.getElementById('students-table')?.querySelector('tbody');
-    window.addStudentBtn = document.getElementById('add-student-btn');
-    window.saveAttendanceBtn = document.getElementById('save-attendance-btn');
-    window.monitorLogoutBtn = document.getElementById('monitor-logout-btn');
-    window.monitorNotification = document.getElementById('monitor-notification');
-    
-    // Admin page elements
-    window.totalStudents = document.getElementById('total-students');
-    window.todayAttendance = document.getElementById('today-attendance');
-    window.attendancePercentage = document.getElementById('attendance-percentage');
-    window.unregisteredStudents = document.getElementById('unregistered-students');
-    window.tabs = document.querySelectorAll('.tab');
-    window.tabContents = document.querySelectorAll('.tab-content');
-    window.adminAttendanceTable = document.getElementById('admin-attendance-table')?.querySelector('tbody');
-    window.applyFiltersBtn = document.getElementById('apply-filters-btn');
-    window.filterMonitor = document.getElementById('filter-monitor');
-    window.generateReportBtn = document.getElementById('generate-report-btn');
-    window.downloadReportBtn = document.getElementById('download-report-btn');
-    window.reportPreview = document.getElementById('report-preview');
-    window.usersTable = document.getElementById('users-table')?.querySelector('tbody');
-    window.addUserBtn = document.getElementById('add-user-btn');
-    window.adminLogoutBtn = document.getElementById('admin-logout-btn');
-    window.adminNotification = document.getElementById('admin-notification');
-}
-
-function setupEventListeners() {
-    // Configuración de los toggles de autenticación
-    if (window.authOptions) {
-        window.authOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Remove active class from all options
-                window.authOptions.forEach(o => o.classList.remove('active'));
-                // Add active class to clicked option
-                option.classList.add('active');
-                
-                // Hide all forms
-                window.authForms.forEach(form => form.classList.remove('active'));
-                // Show selected form
-                const formId = option.getAttribute('data-form');
-                document.getElementById(formId)?.classList.add('active');
+            // Cargar datos desde Firebase en vez de mock data
+            loadDataFromFirebase();
+            
+            // Authentication tab switching
+            const authOptions = document.querySelectorAll('.auth-option');
+            authOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const formId = this.getAttribute('data-form');
+                    
+                    // Update active tab
+                    authOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected form
+                    document.querySelectorAll('.auth-form').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    document.getElementById(formId).classList.add('active');
+                });
             });
-        });
-    }
-    
-    // Login functionality
-    if (window.loginBtn) {
-        window.loginBtn.addEventListener('click', handleLogin);
-    }
-    
-    // Register functionality
-    if (window.registerBtn) {
-        window.registerBtn.addEventListener('click', handleRegister);
-    }
-    
-    // Logout functionality
-    if (window.monitorLogoutBtn) {
-        window.monitorLogoutBtn.addEventListener('click', logout);
-    }
-    
-    if (window.adminLogoutBtn) {
-        window.adminLogoutBtn.addEventListener('click', logout);
-    }
-    
-    // Add student
-    if (window.addStudentBtn) {
-        window.addStudentBtn.addEventListener('click', addStudent);
-    }
-    
-    // Search functionality
-    if (window.searchBtn) {
-        window.searchBtn.addEventListener('click', searchStudents);
-    }
-    
-    // Save attendance
-    if (window.saveAttendanceBtn) {
-        window.saveAttendanceBtn.addEventListener('click', saveAttendance);
-    }
-    
-    // Filter attendance data
-    if (window.applyFiltersBtn) {
-        window.applyFiltersBtn.addEventListener('click', applyFilters);
-    }
-    
-    // Generate report
-    if (window.generateReportBtn) {
-        window.generateReportBtn.addEventListener('click', generateReport);
-    }
-    
-    // Download report
-    if (window.downloadReportBtn) {
-        window.downloadReportBtn.addEventListener('click', downloadReport);
-    }
-    
-    // Add user
-    if (window.addUserBtn) {
-        window.addUserBtn.addEventListener('click', addUser);
-    }
-    
-    // Tab switching
-    if (window.tabs) {
-        window.tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                window.tabs.forEach(t => t.classList.remove('active'));
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Hide all tab contents
-                window.tabContents.forEach(content => content.classList.remove('active'));
-                // Show selected tab content
-                const contentId = tab.getAttribute('data-tab');
-                document.getElementById(contentId)?.classList.add('active');
+            // Mostrar/Ocultar contraseña en login
+            const toggleLogin = document.getElementById('toggle-login-password');
+            const inputLogin = document.getElementById('password');
+
+            if (toggleLogin && inputLogin) {
+                toggleLogin.addEventListener('click', function () {
+                    const isPassword = inputLogin.type === 'password';
+                    inputLogin.type = isPassword ? 'text' : 'password';
+                    this.textContent = isPassword ? '🙈' : '👁️';
+                });
+            }
+
+            // Mostrar/Ocultar contraseña en registro
+            const toggle = document.getElementById('toggle-password');
+            const input = document.getElementById('reg-password');
+
+            if (toggle && input) {
+                toggle.addEventListener('click', function () {
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+                    this.textContent = isPassword ? '🙈' : '👁️';
+                });
+            }
+
+            
+            // Admin tab switching
+            const adminTabs = document.querySelectorAll('.tab');
+            adminTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    adminTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabId).classList.add('active');
+                });
             });
+            
+            // Event listeners for buttons
+            document.getElementById('login-btn').addEventListener('click', handleLogin);
+            document.getElementById('register-btn').addEventListener('click', handleRegister);
+            document.getElementById('monitor-logout-btn').addEventListener('click', handleLogout);
+            document.getElementById('admin-logout-btn').addEventListener('click', handleLogout);
+            
+            document.getElementById('admin-search-btn').addEventListener('click', handleAdminStudentSearch);
+            document.getElementById('add-student-btn').addEventListener('click', handleAddStudent);
+            document.getElementById('admin-add-student-btn').addEventListener('click', handleAdminAddStudent);
+            document.getElementById('save-attendance-btn').addEventListener('click', handleSaveAttendance);
+            document.getElementById('close-edit-student').addEventListener('click', closeEditStudentModal);
+            document.getElementById('save-edit-student-btn').addEventListener('click', handleSaveEditStudent);
+            document.getElementById('close-edit-user').addEventListener('click', closeEditUserModal);
+            document.getElementById('save-edit-user-btn').addEventListener('click', handleSaveEditUser);
+            document.getElementById('apply-filters-btn').addEventListener('click', handleApplyFilters);
+            document.getElementById('generate-report-btn').addEventListener('click', handleGenerateReport);
+            document.getElementById('download-report-btn').addEventListener('click', handleDownloadReport);
+            document.getElementById('add-user-btn').addEventListener('click', handleAddUser);
+            
+            // Show user type specific fields
+            document.getElementById('new-user-type').addEventListener('change', function() {
+                const monitorFields = document.querySelectorAll('.monitor-fields');
+                if (this.value === 'monitor') {
+                    monitorFields.forEach(field => field.style.display = 'block');
+                } else {
+                    monitorFields.forEach(field => field.style.display = 'none');
+                }
+            });
+            
+            document.getElementById('edit-user-type').addEventListener('change', function() {
+                const monitorFields = document.querySelectorAll('.edit-monitor-fields');
+                if (this.value === 'monitor') {
+                    monitorFields.forEach(field => field.style.display = 'block');
+                } else {
+                    monitorFields.forEach(field => field.style.display = 'none');
+                }
+            });
+            
+            // Update date and time
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
         });
-    }
-}
-
-// App data
-let currentUser = null;
-
-// Mock data - unificar definiciones que estaban duplicadas
-const mockMonitors = [
-    { username: 'monitor1', name: 'Juan Monitor', id: '1009876543', phone: '3109876543', career: 'Ingeniería de Sistemas', semester: '3', module: 'Programación' },
-    { username: 'monitor2', name: 'María Cocina', id: '1008765432', phone: '3108765432', career: 'Gastronomía', semester: '2', module: 'Cocina Internacional' }
-];
-
-const mockUsers = [
-    { username: 'admin', name: 'Administrador Principal', type: 'admin', career: '', semester: '', module: '', lastAccess: '2025-04-30 15:45' },
-    { username: 'monitor1', name: 'Juan Monitor', type: 'monitor', career: 'Ingeniería de Sistemas', semester: '3', module: 'Programación', lastAccess: '2025-04-30 08:30' },
-    { username: 'monitor2', name: 'María Cocina', type: 'monitor', career: 'Gastronomía', semester: '2', module: 'Cocina Internacional', lastAccess: '2025-04-30 09:15' }
-];
-
-// Student data per monitor
-const mockStudentsByMonitor = {
-    'monitor1': [
-        { doc: '1001234567', name: 'Juan Pérez', phone: '3101234567', career: 'Ingeniería de Sistemas', status: 'matriculado', attendance: false },
-        { doc: '1002345678', name: 'María García', phone: '3202345678', career: 'Ingeniería de Sistemas', status: 'matriculado', attendance: false },
-        { doc: '1003456789', name: 'Carlos Rodríguez', phone: '3133456789', career: 'Ingeniería de Sistemas', status: 'matriculado', attendance: false }
-    ],
-    'monitor2': [
-        { doc: '1004567890', name: 'Ana Martínez', phone: '3154567890', career: 'Gastronomía', status: 'matriculado', attendance: false },
-        { doc: '1005678901', name: 'Luis Sánchez', phone: '3005678901', career: 'Gastronomía', status: 'matriculado', attendance: false }
-    ]
-};
-
-// Attendance records with monitor information
-const mockAttendance = [
-    { doc: '1001234567', name: 'Juan Pérez', phone: '3101234567', career: 'Ingeniería de Sistemas', monitor: 'Juan Monitor', date: '2025-04-30', time: '08:15', status: 'matriculado', attendance: 'Presente' },
-    { doc: '1002345678', name: 'María García', phone: '3202345678', career: 'Ingeniería de Sistemas', monitor: 'Juan Monitor', date: '2025-04-30', time: '08:20', status: 'matriculado', attendance: 'Presente' },
-    { doc: '1003456789', name: 'Carlos Rodríguez', phone: '3133456789', career: 'Ingeniería de Sistemas', monitor: 'Juan Monitor', date: '2025-04-30', time: '08:30', status: 'matriculado', attendance: 'Presente' },
-    { doc: '1004567890', name: 'Ana Martínez', phone: '3154567890', career: 'Gastronomía', monitor: 'María Cocina', date: '2025-04-30', time: '09:15', status: 'matriculado', attendance: 'Presente' },
-    { doc: '1005678901', name: 'Luis Sánchez', phone: '3005678901', career: 'Gastronomía', monitor: 'María Cocina', date: '2025-04-30', time: '09:20', status: 'matriculado', attendance: 'Presente' },
-    { doc: '1006789012', name: 'Pedro Gómez', phone: '3166789012', career: 'Ingeniería de Sistemas', monitor: 'Juan Monitor', date: '2025-04-30', time: '08:45', status: 'no-matriculado', attendance: 'Presente' },
-    { doc: '1007890123', name: 'Laura López', phone: '3177890123', career: 'Gastronomía', monitor: 'María Cocina', date: '2025-04-29', time: '09:10', status: 'matriculado', attendance: 'Ausente' },
-    { doc: '1008901234', name: 'Diego Torres', phone: '3128901234', career: 'Ingeniería de Sistemas', monitor: 'Juan Monitor', date: '2025-04-29', time: '08:15', status: 'matriculado', attendance: 'Presente' }
-];
-
-// Initialize charts - asegurar que solo se ejecuta cuando las librerías están cargadas
-function initCharts() {
-    // Los gráficos se inicializarán cuando los datos estén disponibles
-    console.log("Google Charts cargado con éxito");
-}
-
-// Login functionality
-function handleLogin() {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-  const userType = document.getElementById('user-type').value;
-
-  if (!username || !password) {
-    showNotification(authNotification, 'Por favor complete todos los campos', 'error');
-    return;
-  }
-
-  fetch('https://script.google.com/macros/s/AKfycbzc3QMv0YtKi5fUTos6lDyuV5WSHsVZHkPSG5ttfutu3GEh5hHA9FNCFqDXJ5T18RE/exec', {
-    method: 'POST',
-    body: JSON.stringify({ action: 'login', username, password }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      currentUser = {
-        username,
-        type: data.type,
-        name: data.name,
-        career: data.career,
-        semester: data.semester,
-        module: data.module
-      };
-      data.type === 'admin' ? showAdminPage() : showMonitorPage();
-    } else {
-      showNotification(authNotification, 'Credenciales incorrectas', 'error');
-    }
-  });
-}
-
-
-// Register functionality
-function handleRegister() {
-  const fullname = document.getElementById('reg-fullname').value;
-  const id = document.getElementById('reg-id').value;
-  const phone = document.getElementById('reg-phone').value;
-  const career = document.getElementById('reg-career').value;
-  const semester = document.getElementById('reg-semester').value;
-  const module = document.getElementById('reg-module').value;
-  const username = document.getElementById('reg-username').value;
-  const password = document.getElementById('reg-password').value;
-
-  if (!fullname || !id || !phone || !career || !semester || !module || !username || !password) {
-    showNotification(authNotification, 'Por favor complete todos los campos', 'error');
-    return;
-  }
-
-  fetch('https://script.google.com/macros/s/AKfycbzc3QMv0YtKi5fUTos6lDyuV5WSHsVZHkPSG5ttfutu3GEh5hHA9FNCFqDXJ5T18RE/exec', {
-    method: 'POST',
-    body: JSON.stringify({
-      action: 'register',
-      username,
-      password,
-      type: 'monitor',
-      fullname,
-      career,
-      semester,
-      module
-    }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      showNotification(authNotification, 'Registro exitoso. Ahora inicie sesión.', 'success');
-      authOptions[0].click(); // Cambia a formulario de login
-    } else {
-      showNotification(authNotification, data.message || 'Error en el registro', 'error');
-    }
-  });
-}
-
-// Show monitor page
-function showMonitorPage() {
-    window.authContainer.classList.add('hidden');
-    window.monitorPage.classList.remove('hidden');
-    window.adminPage.classList.add('hidden');
-    
-    // Update monitor info
-    window.monitorName.textContent = currentUser.name;
-    window.monitorCareer.textContent = `Carrera: ${currentUser.career}`;
-    window.monitorSemester.textContent = `Semestre: ${currentUser.semester}`;
-    window.monitorModule.textContent = `Módulo: ${currentUser.module}`;
-    
-    // Update date and time
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-    
-    // Load students for this monitor
-    loadStudents();
-}
-
-// Show admin page
-function showAdminPage() {
-    window.authContainer.classList.add('hidden');
-    window.monitorPage.classList.add('hidden');
-    window.adminPage.classList.remove('hidden');
-    
-    // Load dashboard data
-    loadDashboardData();
-    
-    // Load attendance data
-    loadAttendanceData();
-    
-    // Load monitor options for filters
-    loadMonitorOptions();
-    
-    // Load users table
-    loadUsersTable();
-    
-    // Verificar que Chart.js está cargado antes de intentar dibujar los gráficos
-    if (typeof Chart !== 'undefined') {
-        drawCharts();
-    } else {
-        // Si Chart.js aún no está cargado, esperar a que se cargue
-        const checkChartInterval = setInterval(() => {
-            if (typeof Chart !== 'undefined') {
-                clearInterval(checkChartInterval);
-                drawCharts();
-            }
-        }, 100);
-    }
-}
-
-// Initialize date and time display for monitor page
-function updateDateTime() {
-    const now = new Date();
-    window.monitorDate.textContent = `Fecha: ${now.toLocaleDateString()}`;
-    window.monitorTime.textContent = `Hora: ${now.toLocaleTimeString()}`;
-}
-
-// Logout functionality
-function logout() {
-    currentUser = null;
-    window.authContainer.classList.remove('hidden');
-    window.monitorPage.classList.add('hidden');
-    window.adminPage.classList.add('hidden');
-    
-    // Reset forms
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    window.authOptions[0].click();
-}
-
-// Load students for the current monitor
-function loadStudents() {
-    if (!window.studentsTable) return;
-    
-    window.studentsTable.innerHTML = '';
-    
-    const students = mockStudentsByMonitor[currentUser.username] || [];
-    
-    students.forEach(student => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${student.doc}</td>
-            <td>${student.name}</td>
-            <td>${student.phone}</td>
-            <td>${student.status}</td>
-            <td>
-                <input type="checkbox" class="attendance-checkbox" data-doc="${student.doc}" ${student.attendance ? 'checked' : ''}>
-            </td>
-            <td>
-                <button class="btn-danger delete-student" data-doc="${student.doc}">Eliminar</button>
-            </td>
-        `;
-        window.studentsTable.appendChild(row);
-    });
-    
-    // Add event listeners to checkboxes
-    document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const doc = this.getAttribute('data-doc');
-            const students = mockStudentsByMonitor[currentUser.username];
-            const studentIndex = students.findIndex(s => s.doc === doc);
-            if (studentIndex !== -1) {
-                students[studentIndex].attendance = this.checked;
-            }
-        });
-    });
-    
-    // Add event listeners to delete buttons
-    document.querySelectorAll('.delete-student').forEach(button => {
-        button.addEventListener('click', function() {
-            const doc = this.getAttribute('data-doc');
-            deleteStudent(doc);
-        });
-    });
-}
-
-// Delete student
-function deleteStudent(doc) {
-    const students = mockStudentsByMonitor[currentUser.username];
-    const studentIndex = students.findIndex(s => s.doc === doc);
-    if (studentIndex !== -1) {
-        students.splice(studentIndex, 1);
-        loadStudents();
-        showNotification(window.monitorNotification, 'Estudiante eliminado correctamente', 'success');
-    }
-}
-
-// Add student
-function addStudent() {
-    const doc = document.getElementById('new-student-doc')?.value;
-    const name = document.getElementById('new-student-name')?.value;
-    const phone = document.getElementById('new-student-phone')?.value;
-    const career = document.getElementById('new-student-career')?.value;
-    
-    // Simple validation
-    if (!doc || !name || !phone || !career) {
-        showNotification(window.monitorNotification, 'Por favor, complete todos los campos', 'error');
-        return;
-    }
-    
-    // Check if student already exists
-    const students = mockStudentsByMonitor[currentUser.username] || [];
-    if (students.some(s => s.doc === doc)) {
-        showNotification(window.monitorNotification, 'El estudiante ya existe', 'error');
-        return;
-    }
-    
-    // Add student
-    if (!mockStudentsByMonitor[currentUser.username]) {
-        mockStudentsByMonitor[currentUser.username] = [];
-    }
-    
-    mockStudentsByMonitor[currentUser.username].push({
-        doc,
-        name,
-        phone,
-        career,
-        status: 'no-matriculado', // New students are marked as not enrolled
-        attendance: false
-    });
-    
-    // Reset form
-    document.getElementById('new-student-doc').value = '';
-    document.getElementById('new-student-name').value = '';
-    document.getElementById('new-student-phone').value = '';
-    document.getElementById('new-student-career').value = '';
-    
-    // Reload students
-    loadStudents();
-    
-    showNotification(window.monitorNotification, 'Estudiante agregado correctamente', 'success');
-}
-
-// Search functionality
-function searchStudents() {
-    if (!window.studentsTable) return;
-    
-    const searchTerm = window.studentSearch.value.toLowerCase();
-    const rows = window.studentsTable.querySelectorAll('tr');
-    
-    rows.forEach(row => {
-        const doc = row.querySelector('td:first-child').textContent.toLowerCase();
-        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
         
-        if (doc.includes(searchTerm) || name.includes(searchTerm)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-}
-
-// Save attendance
-function saveAttendance() {
-  const students = mockStudentsByMonitor[currentUser.username] || [];
-  const now = new Date();
-  const date = now.toISOString().split('T')[0];
-  const time = now.toLocaleTimeString();
-
-  const attendanceData = students.map(student => ({
-    date,
-    time,
-    doc: student.doc,
-    name: student.name,
-    phone: student.phone,
-    career: student.career,
-    monitor: currentUser.name,
-    status: student.status,
-    attendance: student.attendance ? 'Presente' : 'Ausente'
-  }));
-
-  fetch('https://script.google.com/macros/s/AKfycbzc3QMv0YtKi5fUTos6lDyuV5WSHsVZHkPSG5ttfutu3GEh5hHA9FNCFqDXJ5T18RE/exec', {
-    method: 'POST',
-    body: JSON.stringify({
-      action: 'saveAttendance',
-      attendance: attendanceData
-    }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      showNotification(monitorNotification, 'Asistencia guardada en Google Sheets', 'success');
-    } else {
-      showNotification(monitorNotification, 'Error al guardar asistencia', 'error');
-    }
-  });
-}
-
-// Admin page functions
-
-// Load dashboard data
-function loadDashboardData() {
-    if (!window.totalStudents) return;
-    
-    // Total students
-    let studentsCount = 0;
-    Object.values(mockStudentsByMonitor).forEach(students => {
-        studentsCount += students.length;
-    });
-    window.totalStudents.textContent = studentsCount;
-    
-    // Today's attendance
-    const today = new Date().toISOString().split('T')[0];
-    const todayRecords = mockAttendance.filter(record => record.date === today && record.attendance === 'Presente');
-    window.todayAttendance.textContent = todayRecords.length;
-    
-    // Attendance percentage
-    const percentage = studentsCount > 0 ? Math.round((todayRecords.length / studentsCount) * 100) : 0;
-    window.attendancePercentage.textContent = percentage + '%';
-    
-    // Unregistered students
-    const unregistered = mockAttendance.filter(record => record.status === 'no-matriculado' && record.date === today);
-    window.unregisteredStudents.textContent = unregistered.length;
-}
-
-// Load attendance data
-function loadAttendanceData() {
-    if (!window.adminAttendanceTable) return;
-
-    window.adminAttendanceTable.innerHTML = '';
-    
-    mockAttendance.forEach(record => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${record.doc}</td>
-            <td>${record.name}</td>
-            <td>${record.phone}</td>
-            <td>${record.career}</td>
-            <td>${record.monitor}</td>
-            <td>${record.date}</td>
-            <td>${record.time}</td>
-            <td>${record.status}</td>
-            <td>${record.attendance}</td>
-        `;
-        window.adminAttendanceTable.appendChild(row);
-    });
-}
-
-// Load monitor options for filters
-function loadMonitorOptions() {
-    // Load unique monitors from mock data
-    const monitors = [...new Set(mockAttendance.map(record => record.monitor))];
-    
-    // Populate filter dropdown
-    const filterMonitor = document.getElementById('filter-monitor');
-    if (filterMonitor) {
-        filterMonitor.innerHTML = '<option value="">Todos</option>';
-        monitors.forEach(monitor => {
-            const option = document.createElement('option');
-            option.value = monitor;
-            option.textContent = monitor;
-            filterMonitor.appendChild(option);
-        });
-    }
-    
-    // Populate report dropdown
-    const reportMonitor = document.getElementById('report-monitor');
-    if (reportMonitor) {
-        reportMonitor.innerHTML = '<option value="">Todos</option>';
-        monitors.forEach(monitor => {
-            const option = document.createElement('option');
-            option.value = monitor;
-            option.textContent = monitor;
-            reportMonitor.appendChild(option);
-        });
-    }
-}
-
-// Filter attendance data
-function applyFilters() {
-    if (!window.adminAttendanceTable) return;
-    
-    const dateFilter = document.getElementById('filter-date')?.value;
-    const careerFilter = document.getElementById('filter-career')?.value;
-    const monitorFilter = window.filterMonitor?.value;
-    const statusFilter = document.getElementById('filter-status')?.value;
-    
-    window.adminAttendanceTable.innerHTML = '';
-    
-    mockAttendance.forEach(record => {
-        // Apply filters
-        if (
-            (!dateFilter || record.date === dateFilter) &&
-            (!careerFilter || record.career === careerFilter) &&
-            (!monitorFilter || record.monitor === monitorFilter) &&
-            (!statusFilter || 
-             (statusFilter === 'matriculado' && record.status === 'matriculado') ||
-             (statusFilter === 'no-matriculado' && record.status === 'no-matriculado'))
-        ) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${record.doc}</td>
-                <td>${record.name}</td>
-                <td>${record.phone}</td>
-                <td>${record.career}</td>
-                <td>${record.monitor}</td>
-                <td>${record.date}</td>
-                <td>${record.time}</td>
-                <td>${record.status}</td>
-                <td>${record.attendance}</td>
-            `;
-            window.adminAttendanceTable.appendChild(row);
-        }
-    });
-}
-
-// Generate report
-function generateReport() {
-    if (!window.reportPreview) return;
-    
-    const reportType = document.getElementById('report-type')?.value;
-    const startDate = document.getElementById('report-date-start')?.value;
-    const endDate = document.getElementById('report-date-end')?.value;
-    const careerFilter = document.getElementById('report-career')?.value;
-    const monitorFilter = document.getElementById('report-monitor')?.value;
-    
-    // Simple validation
-    if (!startDate || !endDate) {
-        showNotification(window.adminNotification, 'Por favor, seleccione fechas para el informe', 'error');
-        return;
-    }
-    
-    // Filter data based on criteria
-    let filteredData = mockAttendance.filter(record => {
-        return (
-            record.date >= startDate && 
-            record.date <= endDate &&
-            (!careerFilter || record.career === careerFilter) &&
-            (!monitorFilter || record.monitor === monitorFilter)
-        );
-    });
-    
-    // Generate report HTML
-    let reportHTML = '<h3>Informe de Asistencia</h3>';
-    reportHTML += `<p>Período: ${startDate} a ${endDate}</p>`;
-    
-    if (careerFilter) {
-        reportHTML += `<p>Carrera: ${careerFilter}</p>`;
-    }
-    
-    if (monitorFilter) {
-        reportHTML += `<p>Monitor: ${monitorFilter}</p>`;
-    }
-    
-    // Statistics based on report type
-    switch(reportType) {
-        case 'daily':
-            reportHTML += generateDailyReport(filteredData);
-            break;
-        case 'weekly':
-            reportHTML += generateWeeklyReport(filteredData, startDate, endDate);
-            break;
-        case 'monthly':
-            reportHTML += generateMonthlyReport(filteredData);
-            break;
-        case 'by-career':
-            reportHTML += generateCareerReport(filteredData);
-            break;
-        case 'by-monitor':
-            reportHTML += generateMonitorReport(filteredData);
-            break;
-        case 'by-semester':
-            reportHTML += '<p>No hay datos de semestre disponibles para los estudiantes en este momento.</p>';
-            break;
-        case 'unregistered':
-            reportHTML += generateUnregisteredReport(filteredData);
-            break;
-        default:
-            reportHTML += '<p>Seleccione un tipo de informe válido.</p>';
-    }
-    
-    // Display report
-    window.reportPreview.innerHTML = reportHTML;
-    
-    showNotification(window.adminNotification, 'Informe generado correctamente', 'success');
-}
-
-// Report generation functions
-function generateDailyReport(data) {
-    // Group by date
-    const dateGroups = {};
-    data.forEach(record => {
-        if (!dateGroups[record.date]) {
-            dateGroups[record.date] = { total: 0, present: 0, absent: 0 };
+        // Cargar datos desde Firebase
+        function loadDataFromFirebase() {
+            // Cargar usuarios
+            const usersRef = ref(database, 'users');
+            onValue(usersRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    users = Object.values(snapshot.val());
+                } else {
+                    // Si no hay datos, cargar usuarios de prueba
+                    loadMockUsers();
+                    // Y guardarlos en Firebase
+                    saveUsersToFirebase();
+                }
+            });
+            
+            // Cargar estudiantes
+            const studentsRef = ref(database, 'students');
+            onValue(studentsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    students = Object.values(snapshot.val());
+                } else {
+                    // Si no hay datos, cargar estudiantes de prueba
+                    loadMockStudents();
+                    // Y guardarlos en Firebase
+                    saveStudentsToFirebase();
+                }
+            });
+            
+            // Cargar asistencias
+            const attendanceRef = ref(database, 'attendance');
+            onValue(attendanceRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    attendanceData = Object.values(snapshot.val());
+                } else {
+                    // Si no hay datos, cargar asistencias de prueba
+                    loadMockAttendance();
+                    // Y guardarlas en Firebase
+                    saveAttendanceToFirebase();
+                }
+            });
         }
         
-        dateGroups[record.date].total++;
-        if (record.attendance === 'Presente') {
-            dateGroups[record.date].present++;
-        } else {
-            dateGroups[record.date].absent++;
-        }
-    });
-    
-    let html = '<table><thead><tr><th>Fecha</th><th>Total</th><th>Presentes</th><th>Ausentes</th><th>% Asistencia</th></tr></thead><tbody>';
-    
-    Object.keys(dateGroups).sort().forEach(date => {
-        const group = dateGroups[date];
-        const attendance = group.total > 0 ? Math.round((group.present / group.total) * 100) : 0;
-        
-        html += `<tr>
-            <td>${date}</td>
-            <td>${group.total}</td>
-            <td>${group.present}</td>
-            <td>${group.absent}</td>
-            <td>${attendance}%</td>
-        </tr>`;
-    });
-    
-    html += '</tbody></table>';
-    return html;
-}
-
-function generateWeeklyReport(data, startDate, endDate) {
-    // Convert date strings to Date objects
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    // Calculate the number of weeks
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const numberOfWeeks = Math.ceil(diffDays / 7);
-    
-    // Group by week
-    const weekGroups = {};
-    
-    data.forEach(record => {
-        const recordDate = new Date(record.date);
-        const weekNumber = Math.ceil((recordDate - start) / (1000 * 60 * 60 * 24 * 7));
-        
-        if (!weekGroups[weekNumber]) {
-            weekGroups[weekNumber] = { total: 0, present: 0, absent: 0 };
+        // Guardar usuarios en Firebase
+        function saveUsersToFirebase() {
+            set(ref(database, 'users'), users);
         }
         
-        weekGroups[weekNumber].total++;
-        if (record.attendance === 'Presente') {
-            weekGroups[weekNumber].present++;
-        } else {
-            weekGroups[weekNumber].absent++;
-        }
-    });
-    
-    let html = '<table><thead><tr><th>Semana</th><th>Total</th><th>Presentes</th><th>Ausentes</th><th>% Asistencia</th></tr></thead><tbody>';
-    
-    for (let i = 1; i <= numberOfWeeks; i++) {
-        const group = weekGroups[i] || { total: 0, present: 0, absent: 0 };
-        const attendance = group.total > 0 ? Math.round((group.present / group.total) * 100) : 0;
-        
-        html += `<tr>
-            <td>Semana ${i}</td>
-            <td>${group.total}</td>
-            <td>${group.present}</td>
-            <td>${group.absent}</td>
-            <td>${attendance}%</td>
-        </tr>`;
-    }
-    
-    html += '</tbody></table>';
-    return html;
-}
-
-function generateMonthlyReport(data) {
-    // Group by month
-    const monthGroups = {};
-    
-    data.forEach(record => {
-        const month = record.date.substring(0, 7); // YYYY-MM
-        
-        if (!monthGroups[month]) {
-            monthGroups[month] = { total: 0, present: 0, absent: 0 };
+        // Guardar estudiantes en Firebase
+        function saveStudentsToFirebase() {
+            set(ref(database, 'students'), students);
         }
         
-        monthGroups[month].total++;
-        if (record.attendance === 'Presente') {
-            monthGroups[month].present++;
-        } else {
-            monthGroups[month].absent++;
-        }
-    });
-    
-    let html = '<table><thead><tr><th>Mes</th><th>Total</th><th>Presentes</th><th>Ausentes</th><th>% Asistencia</th></tr></thead><tbody>';
-    
-    Object.keys(monthGroups).sort().forEach(month => {
-        const group = monthGroups[month];
-        const attendance = group.total > 0 ? Math.round((group.present / group.total) * 100) : 0;
-        
-        // Format month from YYYY-MM to Month YYYY
-        const date = new Date(month + '-01');
-        const formattedMonth = date.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-        
-        html += `<tr>
-            <td>${formattedMonth}</td>
-            <td>${group.total}</td>
-            <td>${group.present}</td>
-            <td>${group.absent}</td>
-            <td>${attendance}%</td>
-        </tr>`;
-    });
-    
-    html += '</tbody></table>';
-    return html;
-}
-
-function generateCareerReport(data) {
-    // Group by career
-    const careerGroups = {};
-    
-    data.forEach(record => {
-        if (!careerGroups[record.career]) {
-            careerGroups[record.career] = { total: 0, present: 0, absent: 0 };
+        // Guardar asistencias en Firebase
+        function saveAttendanceToFirebase() {
+            set(ref(database, 'attendance'), attendanceData);
         }
         
-        careerGroups[record.career].total++;
-        if (record.attendance === 'Presente') {
-            careerGroups[record.career].present++;
-        } else {
-            careerGroups[record.career].absent++;
-        }
-    });
-    
-    let html = '<table><thead><tr><th>Carrera</th><th>Total</th><th>Presentes</th><th>Ausentes</th><th>% Asistencia</th></tr></thead><tbody>';
-    
-    Object.keys(careerGroups).sort().forEach(career => {
-        const group = careerGroups[career];
-        const attendance = group.total > 0 ? Math.round((group.present / group.total) * 100) : 0;
-        
-        html += `<tr>
-            <td>${career}</td>
-            <td>${group.total}</td>
-            <td>${group.present}</td>
-            <td>${group.absent}</td>
-            <td>${attendance}%</td>
-        </tr>`;
-    });
-    
-    html += '</tbody></table>';
-    return html;
-}
-
-function generateMonitorReport(data) {
-    // Group by monitor
-    const monitorGroups = {};
-    
-    data.forEach(record => {
-        if (!monitorGroups[record.monitor]) {
-            monitorGroups[record.monitor] = { total: 0, present: 0, absent: 0 };
+        // Load mock data for demo purposes
+        function loadMockData() {
+            loadMockUsers();
+            loadMockStudents();
+            loadMockAttendance();
         }
         
-        monitorGroups[record.monitor].total++;
-        if (record.attendance === 'Presente') {
-            monitorGroups[record.monitor].present++;
-        } else {
-            monitorGroups[record.monitor].absent++;
-        }
-    });
-    
-    let html = '<table><thead><tr><th>Monitor</th><th>Total</th><th>Presentes</th><th>Ausentes</th><th>% Asistencia</th></tr></thead><tbody>';
-    
-    Object.keys(monitorGroups).sort().forEach(monitor => {
-        const group = monitorGroups[monitor];
-        const attendance = group.total > 0 ? Math.round((group.present / group.total) * 100) : 0;
-        
-        html += `<tr>
-            <td>${monitor}</td>
-            <td>${group.total}</td>
-            <td>${group.present}</td>
-            <td>${group.absent}</td>
-            <td>${attendance}%</td>
-        </tr>`;
-    });
-    
-    html += '</tbody></table>';
-    return html;
-}
-
-function generateUnregisteredReport(data) {
-    // Filter unregistered students
-    const unregistered = data.filter(record => record.status === 'no-matriculado');
-    
-    let html = '<table><thead><tr><th>Documento</th><th>Nombre</th><th>Teléfono</th><th>Carrera</th><th>Monitor</th><th>Fecha</th></tr></thead><tbody>';
-    
-    unregistered.forEach(record => {
-        html += `<tr>
-            <td>${record.doc}</td>
-            <td>${record.name}</td>
-            <td>${record.phone}</td>
-            <td>${record.career}</td>
-            <td>${record.monitor}</td>
-            <td>${record.date}</td>
-        </tr>`;
-    });
-    
-    if (unregistered.length === 0) {
-        html += '<tr><td colspan="6">No hay estudiantes no matriculados para el período seleccionado.</td></tr>';
-    }
-    
-    html += '</tbody></table>';
-    return html;
-}
-
-// Download report
-function downloadReport() {
-    // In a real app, this would generate a PDF or Excel file
-    const reportContent = window.reportPreview?.innerHTML || '';
-    
-    if (!reportContent) {
-        showNotification(window.adminNotification, 'No hay informe para descargar', 'error');
-        return;
-    }
-    
-    // For demo purposes, let's create a simple text download
-    const blob = new Blob([reportContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'reporte_asistencia.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    showNotification(window.adminNotification, 'Informe descargado correctamente', 'success');
-}
-
-// Draw charts for admin dashboard
-function drawCharts() {
-    drawAttendanceChart();
-    drawCareerChart();
-    drawMonitorPerformanceChart();
-}
-
-// Draw attendance chart
-function drawAttendanceChart() {
-    const ctx = document.getElementById('attendance-chart');
-    if (!ctx) return;
-    
-    // Get last 7 days of data
-    const today = new Date();
-    const dates = [];
-    const present = [];
-    const absent = [];
-    
-    for (let i = 6; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
-        dates.push(dateStr);
-        
-        const dayRecords = mockAttendance.filter(record => record.date === dateStr);
-        present.push(dayRecords.filter(record => record.attendance === 'Presente').length);
-        absent.push(dayRecords.filter(record => record.attendance === 'Ausente').length);
-    }
-    
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: dates,
-            datasets: [
+        // Load mock users
+        function loadMockUsers() {
+            users = [
                 {
-                    label: 'Presentes',
-                    data: present,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    username: 'admin',
+                    password: 'admin123',
+                    fullName: 'Administrador Principal',
+                    id: '1234567890',
+                    phone: '3001234567',
+                    type: 'admin'
                 },
                 {
-                    label: 'Ausentes',
-                    data: absent,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
+                    username: 'monitor1',
+                    password: 'monitor123',
+                    fullName: 'Juan Pérez',
+                    id: '1098765432',
+                    phone: '3107654321',
+                    type: 'monitor',
+                    career: 'Ingeniería de Sistemas',
+                    module: 'Programación Web',
+                    horario: '10:00 - 12:00'
                 }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-}
-
-// Draw career distribution chart
-function drawCareerChart() {
-    const ctx = document.getElementById('career-chart');
-    if (!ctx) return;
-    
-    // Group students by career
-    const careerCounts = {};
-    
-    Object.values(mockStudentsByMonitor).forEach(students => {
-        students.forEach(student => {
-            if (!careerCounts[student.career]) {
-                careerCounts[student.career] = 0;
-            }
-            careerCounts[student.career]++;
-        });
-    });
-    
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: Object.keys(careerCounts),
-            datasets: [
-                {
-                    data: Object.values(careerCounts),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
-                }
-            ]
-        }
-    });
-}
-
-// Draw monitor performance chart
-function drawMonitorPerformanceChart() {
-    const ctx = document.getElementById('monitor-chart');
-    if (!ctx) return;
-    
-    // Calculate attendance rates by monitor
-    const monitorPerformance = {};
-    
-    mockAttendance.forEach(record => {
-        if (!monitorPerformance[record.monitor]) {
-            monitorPerformance[record.monitor] = { total: 0, present: 0 };
+            ];
         }
         
-        monitorPerformance[record.monitor].total++;
-        if (record.attendance === 'Presente') {
-            monitorPerformance[record.monitor].present++;
-        }
-    });
-    
-    const monitors = Object.keys(monitorPerformance);
-    const rates = monitors.map(monitor => {
-        const { total, present } = monitorPerformance[monitor];
-        return total > 0 ? Math.round((present / total) * 100) : 0;
-    });
-    
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: monitors,
-            datasets: [
+        // Load mock students
+        function loadMockStudents() {
+            students = [
                 {
-                    label: '% Asistencia',
-                    data: rates,
-                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    borderWidth: 1
+                    doc: '1001234567',
+                    name: 'María González',
+                    phone: '3112345678',
+                    career: 'Ingeniería de Sistemas',
+                    status: 'matriculado'
+                },
+                {
+                    doc: '1002345678',
+                    name: 'Carlos Rodríguez',
+                    phone: '3223456789',
+                    career: 'Ingeniería de Sistemas',
+                    status: 'matriculado'
+                },
+                {
+                    doc: '1003456789',
+                    name: 'Ana Martínez',
+                    phone: '3134567890',
+                    career: 'Derecho',
+                    status: 'no-matriculado'
                 }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
+            ];
+        }
+        
+        // Load mock attendance data
+        function loadMockAttendance() {
+            const today = new Date().toISOString().split('T')[0];
+            attendanceData = [
+                {
+                    doc: '1001234567',
+                    name: 'María González',
+                    phone: '3112345678',
+                    career: 'Ingeniería de Sistemas',
+                    date: today,
+                    time: '10:15',
+                    status: 'matriculado',
+                    attendance: 'presente',
+                    monitorUsername: 'monitor1'
+                },
+                {
+                    doc: '1002345678',
+                    name: 'Carlos Rodríguez',
+                    phone: '3223456789',
+                    career: 'Ingeniería de Sistemas',
+                    date: today,
+                    time: '10:20',
+                    status: 'matriculado',
+                    attendance: 'presente',
+                    monitorUsername: 'monitor1'
+                }
+            ];
+        }
+        
+        // Update date and time display
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            
+            document.getElementById('monitor-date').textContent = 'Fecha: ' + now.toLocaleDateString('es-CO', dateOptions);
+            document.getElementById('monitor-time').textContent = 'Hora: ' + now.toLocaleTimeString('es-CO', timeOptions);
+        }
+        
+        // Show notification
+        function showNotification(containerId, message, type) {
+            const notification = document.getElementById(containerId);
+            notification.textContent = message;
+            notification.className = 'notification ' + type;
+            notification.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Handle login
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('user-type').value;
+            
+            // Find user
+            const user = users.find(u => u.username === username && u.password === password && u.type === userType);
+                
+            if (user) {
+                currentUser = user;
+                
+                // Hide auth container
+                document.getElementById('auth-container').classList.add('hidden');
+                
+                // Show appropriate page based on user type
+                if (user.type === 'monitor') {
+                    document.getElementById('monitor-page').classList.remove('hidden');
+                    
+                    // Update monitor info
+                    document.getElementById('monitor-name').textContent = user.fullName;
+                    document.getElementById('monitor-career').textContent = 'Carrera: ' + user.career;
+                    document.getElementById('monitor-module').textContent = 'Módulo: ' + user.module;
+                    document.getElementById('monitor-horario').textContent = 'Horario: ' + user.horario;
+                    document.getElementById('monitor-semester').textContent = 'Semestre: ' + user.semester;
+                    
+                    // Load students
+                    loadStudentsTable();
+                } else {
+                    document.getElementById('admin-page').classList.remove('hidden');
+                    
+                    // Load admin data
+                    loadAdminDashboard();
+                    loadAttendanceTable();
+                    loadAdminStudentsTable();
+                    loadUsersTable();
+                }
+                
+                showNotification(user.type + '-notification', '¡Bienvenido, ' + user.fullName + '!', 'success');
+            } else {
+                showNotification('auth-notification', 'Usuario o contraseña incorrectos', 'error');
+            }
+        }    
+        // Handle register
+        function handleRegister() {
+            const fullname = document.getElementById('reg-fullname').value;
+            const id = document.getElementById('reg-id').value;
+            const phone = document.getElementById('reg-phone').value;
+            const career = document.getElementById('reg-career').value;
+            const module = document.getElementById('reg-module').value;
+            const horario = document.getElementById('reg-horario').value;
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            
+            // Validate fields
+          if (!fullname || !id || !phone || !career || !module || !horario || !username || !password) {
+                showNotification('register-notification', 'Por favor complete todos los campos', 'error');
+                return;
+            }
+            
+            // Check if username already exists
+            if (users.some(u => u.username === username)) {
+                showNotification('register-notification', 'Este nombre de usuario ya está en uso', 'error');
+                return; // ⛔ Salimos sin mostrar el mensaje de éxito
+            }
+            
+            // Add new monitor
+            const semester = document.getElementById('reg-semester').value;
+
+            const newUser = {
+                username: username,
+                password: password,
+                fullName: fullname,
+                id: id,
+                phone: phone,
+                type: 'monitor',
+                career: career,
+                module: module,
+                horario: horario,
+                semester: semester
+            };
+            
+            users.push(newUser);
+            
+            // Guardar en Firebase
+            saveUsersToFirebase();
+
+            showNotification('register-notification', 'Registro exitoso. Puede iniciar sesión ahora', 'success');
+
+            // Espera 1 segundo y cambia a la pestaña de login
+            setTimeout(() => {
+                document.querySelector('.auth-option[data-form="login-form"]').click();
+                document.getElementById('register-form').reset();
+
+                // (Opcional) Autocompletar el nombre de usuario en el login
+                document.getElementById('login-username').value = username;
+                document.getElementById('login-password').focus();
+            }, 1000);
+
+            // Reset form
+            document.getElementById('register-form').reset();
+            
+            // Mostrar el mensaje primero
+            showNotification('register-notification', 'Registro exitoso. Puede iniciar sesión ahora', 'success');
+
+            // Esperar 1 segundo y luego cambiar a la pestaña "Iniciar Sesión"
+            setTimeout(() => {
+                document.querySelector('.auth-option[data-form="login-form"]').click();
+
+                // Opcional: limpiar campos del registro
+                document.getElementById('register-form').reset();
+
+                // Opcional: limpiar notificación después de cambiar
+                setTimeout(() => {
+                    document.getElementById('register-notification').style.display = 'none';
+                }, 1000);
+            }, 1000);
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            // Reset current user
+            currentUser = null;
+            
+            // Hide all pages
+            document.getElementById('monitor-page').classList.add('hidden');
+            document.getElementById('admin-page').classList.add('hidden');
+            
+            // Show auth container
+            document.getElementById('auth-container').classList.remove('hidden');
+            
+            // Reset forms
+            document.getElementById('login-form').reset();
+            document.getElementById('register-form').reset();
+        }
+        
+        // Load students table for monitor
+       function loadStudentsTable() {
+            const tableBody = document.querySelector('#students-table tbody');
+            tableBody.innerHTML = '';
+
+            students
+                .filter(student => student.monitorUsername === currentUser.username)
+                .forEach(student => {
+                    const today = new Date().toISOString().split('T')[0];
+                    const studentAttendance = attendanceData.find(a => 
+                        a.doc === student.doc && 
+                        a.date === today && 
+                        a.monitorUsername === currentUser.username
+                    );
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.doc}</td>
+                        <td>${student.name}</td>
+                        <td>${student.phone}</td>
+                        <td>${student.status === 'matriculado' ? 'Matriculado' : 'No Matriculado'}</td>
+                        <td>
+                            <select class="attendance-select" data-doc="${student.doc}">
+                                <option value="">Seleccione</option>
+                                <option value="presente" ${studentAttendance && studentAttendance.attendance === 'presente' ? 'selected' : ''}>Presente</option>
+                                <option value="ausente" ${studentAttendance && studentAttendance.attendance === 'ausente' ? 'selected' : ''}>Ausente</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn-edit" onclick="openEditStudentModal('${student.doc}')">Editar</button>
+                            <button class="btn-danger" onclick="deleteStudent('${student.doc}')">Eliminar</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+        }
+        
+        // Handle student search
+        function handleStudentSearch() {
+            const searchText = document.getElementById('student-search').value.toLowerCase();
+            
+            const tableBody = document.querySelector('#students-table tbody');
+            const rows = tableBody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const doc = row.cells[0].textContent.toLowerCase();
+                const name = row.cells[1].textContent.toLowerCase();
+                
+                if (doc.includes(searchText) || name.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Handle add student
+        function handleAddStudent() {
+            const doc = document.getElementById('new-student-doc').value;
+            const name = document.getElementById('new-student-name').value;
+            const phone = document.getElementById('new-student-phone').value;
+            const career = document.getElementById('new-student-career').value;
+            const status = document.getElementById('new-student-status').value;
+            
+            // Validate fields
+            if (!doc || !name || !phone || !career) {
+                showNotification('monitor-notification', 'Por favor complete todos los campos', 'error');
+                return;
+            }
+            
+            // Check if student already exists
+            if (students.some(s => s.doc === doc)) {
+                showNotification('monitor-notification', 'El estudiante ya existe', 'error');
+                return;
+            }
+            
+            // Add new student
+            const newStudent = {
+                doc: doc,
+                name: name,
+                phone: phone,
+                career: career,
+                status: status,
+                monitorUsername: currentUser.username
+            };
+            
+            students.push(newStudent);
+            
+            // Guardar en Firebase
+            saveStudentsToFirebase();
+            
+            // Reset form
+            document.getElementById('new-student-doc').value = '';
+            document.getElementById('new-student-name').value = '';
+            document.getElementById('new-student-phone').value = '';
+            document.getElementById('new-student-career').value = '';
+            
+            // Reload table
+            loadStudentsTable();
+            
+            showNotification('monitor-notification', 'Estudiante agregado correctamente', 'success');
+        }
+        
+        // Handle save attendance
+        function handleSaveAttendance() {
+            const attendanceSelects = document.querySelectorAll('.attendance-select');
+            const today = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            let savedCount = 0;
+            
+            attendanceSelects.forEach(select => {
+                const doc = select.getAttribute('data-doc');
+                const attendance = select.value;
+                
+                if (attendance) {
+                    // Find student
+                    const student = students.find(s => s.doc === doc);
+                    
+                    // Check if record already exists
+                    const existingIndex = attendanceData.findIndex(a => 
+                        a.doc === doc && 
+                        a.date === today && 
+                        a.monitorUsername === currentUser.username
+                    );
+                    
+                    const attendanceRecord = {
+                        doc: doc,
+                        name: student.name,
+                        phone: student.phone,
+                        career: student.career,
+                        date: today,
+                        time: time,
+                        status: student.status,
+                        attendance: attendance,
+                        monitorUsername: currentUser.username
+                    };
+                    
+                    if (existingIndex !== -1) {
+                        // Update existing record
+                        attendanceData[existingIndex] = attendanceRecord;
+                    } else {
+                        // Add new record
+                        attendanceData.push(attendanceRecord);
+                    }
+                    
+                    savedCount++;
+                }
+            });
+            
+            // Guardar en Firebase
+            saveAttendanceToFirebase();
+            
+            if (savedCount > 0) {
+                showNotification('monitor-notification', `Asistencia guardada para ${savedCount} estudiantes`, 'success');
+            } else {
+                showNotification('monitor-notification', 'No se guardó ninguna asistencia', 'error');
+            }
+        }
+        
+        // Open edit student modal
+        function openEditStudentModal(docId) {
+            const student = students.find(s => s.doc === docId);
+            
+            if (student) {
+                document.getElementById('edit-student-doc').value = student.doc;
+                document.getElementById('edit-student-name').value = student.name;
+                document.getElementById('edit-student-phone').value = student.phone;
+                document.getElementById('edit-student-career').value = student.career;
+                document.getElementById('edit-student-status').value = student.status;
+                
+                const modal = document.getElementById('edit-student-modal');
+                modal.style.display = 'flex';
+            }
+        }
+        
+        // Close edit student modal
+        function closeEditStudentModal() {
+            const modal = document.getElementById('edit-student-modal');
+            modal.style.display = 'none';
+        }
+        
+        // Handle save edit student
+        function handleSaveEditStudent() {
+            const doc = document.getElementById('edit-student-doc').value;
+            const name = document.getElementById('edit-student-name').value;
+            const phone = document.getElementById('edit-student-phone').value;
+            const career = document.getElementById('edit-student-career').value;
+            const status = document.getElementById('edit-student-status').value;
+            
+            // Find student index
+            const studentIndex = students.findIndex(s => s.doc === doc);
+            
+            if (studentIndex !== -1) {
+                // Update student
+                students[studentIndex].name = name;
+                students[studentIndex].phone = phone;
+                students[studentIndex].career = career;
+                students[studentIndex].status = status;
+                
+                // Update attendance records
+                attendanceData.forEach((record, index) => {
+                    if (record.doc === doc) {
+                        attendanceData[index].name = name;
+                        attendanceData[index].phone = phone;
+                        attendanceData[index].career = career;
+                        attendanceData[index].status = status;
+                    }
+                });
+                
+                // Guardar en Firebase
+                saveStudentsToFirebase();
+                saveAttendanceToFirebase();
+                
+                // Reload table
+                if (currentUser.type === 'monitor') {
+                    loadStudentsTable();
+                } else {
+                    loadAdminStudentsTable();
+                }
+                
+                // Close modal
+                closeEditStudentModal();
+                
+                showNotification(currentUser.type + '-notification', 'Estudiante actualizado correctamente', 'success');
+            }
+        }
+        
+        // Delete student
+        function deleteStudent(docId) {
+            if (confirm('¿Está seguro de eliminar este estudiante?')) {
+                // Find student index
+                const studentIndex = students.findIndex(s => s.doc === docId);
+                
+                if (studentIndex !== -1) {
+                    // Remove student
+                    students.splice(studentIndex, 1);
+                    
+                    // Remove attendance records
+                    attendanceData = attendanceData.filter(record => record.doc !== docId);
+                    
+                    // Guardar en Firebase
+                    saveStudentsToFirebase();
+                    saveAttendanceToFirebase();
+                    
+                    // Reload table
+                    if (currentUser.type === 'monitor') {
+                        loadStudentsTable();
+                    } else {
+                        loadAdminStudentsTable();
+                        loadAttendanceTable();
+                    }
+                    
+                    showNotification(currentUser.type + '-notification', 'Estudiante eliminado correctamente', 'success');
                 }
             }
         }
-    });
-}
+        
+        // Load admin dashboard
+        function loadAdminDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Total students
+            document.getElementById('total-students').textContent = students.length;
+            
+            // Today's attendance
+            const todayAttendance = attendanceData.filter(record => 
+                record.date === today && record.attendance === 'presente'
+            ).length;
+            document.getElementById('today-attendance').textContent = todayAttendance;
+            
+            // Attendance percentage
+            const percentage = students.length > 0 ? Math.round((todayAttendance / students.length) * 100) : 0;
+            document.getElementById('attendance-percentage').textContent = percentage + '%';
+            
+            // Unregistered students
+            const unregistered = students.filter(s => s.status === 'no-matriculado').length;
+            document.getElementById('unregistered-students').textContent = unregistered;
+        }
+        
+        // Load attendance table for admin
+        function loadAttendanceTable() {
+            const tableBody = document.querySelector('#admin-attendance-table tbody');
+            tableBody.innerHTML = '';
+            
+            attendanceData.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.doc}</td>
+                    <td>${record.name}</td>
+                    <td>${record.phone}</td>
+                    <td>${record.career}</td>
+                    <td>${record.date}</td>
+                    <td>${record.time}</td>
+                    <td>${record.status === 'matriculado' ? 'Matriculado' : 'No Matriculado'}</td>
+                    <td>${record.attendance === 'presente' ? 'Presente' : 'Ausente'}</td>
+                    <td>
+                        <button class="btn-danger" onclick="deleteAttendanceRecord('${record.doc}', '${record.date}')">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Delete attendance record
+        function deleteAttendanceRecord(docId, date) {
+            if (confirm('¿Está seguro de eliminar este registro de asistencia?')) {
+                // Find record index
+                const recordIndex = attendanceData.findIndex(record => 
+                    record.doc === docId && record.date === date
+                );
+                
+                if (recordIndex !== -1) {
+                    // Remove record
+                    attendanceData.splice(recordIndex, 1);
+                    
+                    // Guardar en Firebase
+                    saveAttendanceToFirebase();
+                    
+                    // Reload table
+                    loadAttendanceTable();
+                    
+                    // Update dashboard
+                    loadAdminDashboard();
+                    
+                    showNotification('admin-notification', 'Registro de asistencia eliminado correctamente', 'success');
+                }
+            }
+        }
+        
+        // Apply filters to attendance table
+        function handleApplyFilters() {
+            const date = document.getElementById('filter-date').value;
+            const career = document.getElementById('filter-career').value;
+            const status = document.getElementById('filter-status').value;
+            const attendance = document.getElementById('filter-attendance').value;
 
-// Load users table
-function loadUsersTable() {
-    if (!window.usersTable) return;
-    
-    window.usersTable.innerHTML = '';
-    
-    mockUsers.forEach(user => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${user.username}</td>
-            <td>${user.name}</td>
-            <td>${user.type}</td>
-            <td>${user.career || '-'}</td>
-            <td>${user.semester || '-'}</td>
-            <td>${user.module || '-'}</td>
-            <td>${user.lastAccess}</td>
-            <td>
-                <button class="btn-warning edit-user" data-username="${user.username}">Editar</button>
-                <button class="btn-danger delete-user" data-username="${user.username}">Eliminar</button>
-            </td>
-        `;
-        window.usersTable.appendChild(row);
-    });
-    
-    // Add event listeners to buttons
-    document.querySelectorAll('.edit-user').forEach(button => {
-        button.addEventListener('click', function() {
-            const username = this.getAttribute('data-username');
-            editUser(username);
-        });
-    });
-    
-    document.querySelectorAll('.delete-user').forEach(button => {
-        button.addEventListener('click', function() {
-            const username = this.getAttribute('data-username');
-            deleteUser(username);
-        });
-    });
-}
+            const tableBody = document.querySelector('#admin-attendance-table tbody');
+            const rows = tableBody.querySelectorAll('tr');
 
-// Edit user
-function editUser(username) {
-    const user = mockUsers.find(u => u.username === username);
-    if (!user) return;
-    
-    // In a real app, you would show a form to edit the user
-    showNotification(window.adminNotification, 'Edición de usuario no implementada en esta demo', 'info');
-}
+            rows.forEach(row => {
+                const rowDate = row.cells[4].textContent;
+                const rowCareer = row.cells[3].textContent;
+                const rowStatus = row.cells[6].textContent;
+                const rowAttendance = row.cells[7].textContent;
 
-// Delete user
-function deleteUser(username) {
-    const userIndex = mockUsers.findIndex(u => u.username === username);
-    if (userIndex === -1) return;
-    
-    // Don't allow deleting the admin user
-    if (username === 'admin') {
-        showNotification(window.adminNotification, 'No se puede eliminar el usuario administrador', 'error');
-        return;
-    }
-    
-    // Remove from mock data
-    mockUsers.splice(userIndex, 1);
-    
-    // Reload table
-    loadUsersTable();
-    
-    showNotification(window.adminNotification, 'Usuario eliminado correctamente', 'success');
-}
+                let show = true;
 
-// Add user
-function addUser() {
-    const username = document.getElementById('new-user-username')?.value;
-    const name = document.getElementById('new-user-name')?.value;
-    const type = document.getElementById('new-user-type')?.value;
-    const career = document.getElementById('new-user-career')?.value || '';
-    const semester = document.getElementById('new-user-semester')?.value || '';
-    const module = document.getElementById('new-user-module')?.value || '';
-    
-    // Simple validation
-    if (!username || !name || !type) {
-        showNotification(window.adminNotification, 'Por favor, complete los campos obligatorios', 'error');
-        return;
-    }
-    
-    // Check if user already exists
-    if (mockUsers.some(u => u.username === username)) {
-        showNotification(window.adminNotification, 'El usuario ya existe', 'error');
-        return;
-    }
-    
-    // Add user
-    mockUsers.push({
-        username,
-        name,
-        type,
-        career,
-        semester,
-        module,
-        lastAccess: '-'
-    });
-    
-    // Reset form
-    document.getElementById('new-user-username').value = '';
-    document.getElementById('new-user-name').value = '';
-    document.getElementById('new-user-type').value = 'monitor';
-    document.getElementById('new-user-career').value = '';
-    document.getElementById('new-user-semester').value = '';
-    document.getElementById('new-user-module').value = '';
-    
-    // Reload table
-    loadUsersTable();
-    
-    showNotification(window.adminNotification, 'Usuario agregado correctamente', 'success');
-}
+                if (date && rowDate !== date) show = false;
+                if (career && rowCareer !== career) show = false;
+                if (status && ((status === 'matriculado' && rowStatus !== 'Matriculado') || 
+                    (status === 'no-matriculado' && rowStatus !== 'No Matriculado'))) show = false;
+                if (attendance && ((attendance === 'presente' && rowAttendance !== 'Presente') || 
+                    (attendance === 'ausente' && rowAttendance !== 'Ausente'))) show = false;
 
-// Show notification
-function showNotification(element, message, type) {
-    if (!element) return;
-    
-    element.textContent = message;
-    element.className = 'notification ' + type;
-    element.style.display = 'block';
-    
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-        element.style.display = 'none';
-    }, 3000);
-}
- </script>
+                row.style.display = show ? '' : 'none';
+            });
+        }
+        
+        // Generate report based on filters
+        function handleGenerateReport() {
+            const date = document.getElementById('filter-date').value;
+            const career = document.getElementById('filter-career').value;
+            const status = document.getElementById('filter-status').value;
+            const attendance = document.getElementById('filter-attendance').value;
+            
+            // Filter data
+            let filteredData = [...attendanceData];
+            
+            if (date) {
+                filteredData = filteredData.filter(record => record.date === date);
+            }
+            
+            if (career) {
+                filteredData = filteredData.filter(record => record.career === career);
+            }
+            
+            if (status) {
+                filteredData = filteredData.filter(record => record.status === status);
+            }
+            
+            if (attendance) {
+                filteredData = filteredData.filter(record => record.attendance === attendance);
+            }
+            
+            // Generate report
+            const reportContainer = document.getElementById('report-container');
+            const reportData = document.getElementById('report-data');
+            
+            // Clear previous report
+            reportData.innerHTML = '';
+            
+            // Generate report header
+            const header = document.createElement('div');
+            header.className = 'report-header';
+            header.innerHTML = `
+                <h2>Reporte de Asistencia</h2>
+                <p>Fecha: ${date || 'Todas'}</p>
+                <p>Carrera: ${career || 'Todas'}</p>
+                <p>Estado: ${status === 'matriculado' ? 'Matriculado' : status === 'no-matriculado' ? 'No Matriculado' : 'Todos'}</p>
+                <p>Asistencia: ${attendance === 'presente' ? 'Presente' : attendance === 'ausente' ? 'Ausente' : 'Todos'}</p>
+                <p>Total registros: ${filteredData.length}</p>
+            `;
+            reportData.appendChild(header);
+            
+            // Generate table
+            const table = document.createElement('table');
+            table.className = 'report-table';
+            
+            // Table header
+            const tableHeader = document.createElement('thead');
+            tableHeader.innerHTML = `
+                <tr>
+                    <th>Documento</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Carrera</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                    <th>Asistencia</th>
+                </tr>
+            `;
+            table.appendChild(tableHeader);
+            
+            // Table body
+            const tableBody = document.createElement('tbody');
+            
+            filteredData.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.doc}</td>
+                    <td>${record.name}</td>
+                    <td>${record.phone}</td>
+                    <td>${record.career}</td>
+                    <td>${record.date}</td>
+                    <td>${record.time}</td>
+                    <td>${record.status === 'matriculado' ? 'Matriculado' : 'No Matriculado'}</td>
+                    <td>${record.attendance === 'presente' ? 'Presente' : 'Ausente'}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            table.appendChild(tableBody);
+            reportData.appendChild(table);
+            
+            // Show report container
+            reportContainer.style.display = 'block';
+        }
+        
+        // Download report as PDF
+        function handleDownloadReport() {
+            // This is just a placeholder. In a real app, you would use a library like jsPDF or html2pdf
+            alert('Función de descarga de PDF no implementada en esta versión de demostración');
+        }
+        
+        // Load students table for admin
+        function loadAdminStudentsTable() {
+            const tableBody = document.querySelector('#admin-students-table tbody');
+            tableBody.innerHTML = '';
+            
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.doc}</td>
+                    <td>${student.name}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.career}</td>
+                    <td>${student.status === 'matriculado' ? 'Matriculado' : 'No Matriculado'}</td>
+                    <td>${student.monitorUsername || 'N/A'}</td>
+                    <td>
+                        <button class="btn-edit" onclick="openEditStudentModal('${student.doc}')">Editar</button>
+                        <button class="btn-danger" onclick="deleteStudent('${student.doc}')">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Handle admin student search
+        function handleAdminStudentSearch() {
+            const searchText = document.getElementById('admin-student-search').value.toLowerCase();
+            
+            const tableBody = document.querySelector('#admin-students-table tbody');
+            const rows = tableBody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const doc = row.cells[0].textContent.toLowerCase();
+                const name = row.cells[1].textContent.toLowerCase();
+                
+                if (doc.includes(searchText) || name.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Handle admin add student
+        function handleAdminAddStudent() {
+            const doc = document.getElementById('admin-new-student-doc').value;
+            const name = document.getElementById('admin-new-student-name').value;
+            const phone = document.getElementById('admin-new-student-phone').value;
+            const career = document.getElementById('admin-new-student-career').value;
+            const status = document.getElementById('admin-new-student-status').value;
+            const monitor = document.getElementById('admin-new-student-monitor').value;
+            
+            // Validate fields
+            if (!doc || !name || !phone || !career) {
+                showNotification('admin-notification', 'Por favor complete todos los campos', 'error');
+                return;
+            }
+            
+            // Check if student already exists
+            if (students.some(s => s.doc === doc)) {
+                showNotification('admin-notification', 'El estudiante ya existe', 'error');
+                return;
+            }
+            
+            // Add new student
+            const newStudent = {
+                doc: doc,
+                name: name,
+                phone: phone,
+                career: career,
+                status: status,
+                monitorUsername: monitor
+            };
+            
+            students.push(newStudent);
+            
+            // Guardar en Firebase
+            saveStudentsToFirebase();
+            
+            // Reset form
+            document.getElementById('admin-new-student-doc').value = '';
+            document.getElementById('admin-new-student-name').value = '';
+            document.getElementById('admin-new-student-phone').value = '';
+            document.getElementById('admin-new-student-career').value = '';
+            
+            // Reload table
+            loadAdminStudentsTable();
+            
+            showNotification('admin-notification', 'Estudiante agregado correctamente', 'success');
+        }
+        
+        // Load users table
+        function loadUsersTable() {
+            const tableBody = document.querySelector('#users-table tbody');
+            tableBody.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.fullName}</td>
+                    <td>${user.id}</td>
+                    <td>${user.phone}</td>
+                    <td>${user.type === 'admin' ? 'Administrador' : 'Monitor'}</td>
+                    <td>${user.type === 'monitor' ? user.career : 'N/A'}</td>
+                    <td>${user.type === 'monitor' ? user.module : 'N/A'}</td>
+                    <td>
+                        <button class="btn-edit" onclick="openEditUserModal('${user.username}')">Editar</button>
+                        <button class="btn-danger" onclick="deleteUser('${user.username}')">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Open edit user modal
+        function openEditUserModal(username) {
+            const user = users.find(u => u.username === username);
+            
+            if (user) {
+                document.getElementById('edit-user-username').value = user.username;
+                document.getElementById('edit-user-fullname').value = user.fullName;
+                document.getElementById('edit-user-id').value = user.id;
+                document.getElementById('edit-user-phone').value = user.phone;
+                document.getElementById('edit-user-type').value = user.type;
+                
+                // Show/hide monitor fields
+                const monitorFields = document.querySelectorAll('.edit-monitor-fields');
+                if (user.type === 'monitor') {
+                    monitorFields.forEach(field => field.style.display = 'block');
+                    document.getElementById('edit-user-career').value = user.career || '';
+                    document.getElementById('edit-user-module').value = user.module || '';
+                    document.getElementById('edit-user-horario').value = user.horario || '';
+                    document.getElementById('edit-user-semester').value = user.semester || '';
+                } else {
+                    monitorFields.forEach(field => field.style.display = 'none');
+                }
+                
+                const modal = document.getElementById('edit-user-modal');
+                modal.style.display = 'flex';
+            }
+        }
+        
+        // Close edit user modal
+        function closeEditUserModal() {
+            const modal = document.getElementById('edit-user-modal');
+            modal.style.display = 'none';
+        }
+        
+        // Handle save edit user
+        function handleSaveEditUser() {
+            const username = document.getElementById('edit-user-username').value;
+            const fullName = document.getElementById('edit-user-fullname').value;
+            const id = document.getElementById('edit-user-id').value;
+            const phone = document.getElementById('edit-user-phone').value;
+            const type = document.getElementById('edit-user-type').value;
+            
+            // Find user index
+            const userIndex = users.findIndex(u => u.username === username);
+            
+            if (userIndex !== -1) {
+                // Update user
+                users[userIndex].fullName = fullName;
+                users[userIndex].id = id;
+                users[userIndex].phone = phone;
+                users[userIndex].type = type;
+                
+                // Update monitor specific fields
+                if (type === 'monitor') {
+                    users[userIndex].career = document.getElementById('edit-user-career').value;
+                    users[userIndex].module = document.getElementById('edit-user-module').value;
+                    users[userIndex].horario = document.getElementById('edit-user-horario').value;
+                    users[userIndex].semester = document.getElementById('edit-user-semester').value;
+                }
+                
+                // Guardar en Firebase
+                saveUsersToFirebase();
+                
+                // Reload table
+                loadUsersTable();
+                
+                // Close modal
+                closeEditUserModal();
+                
+                showNotification('admin-notification', 'Usuario actualizado correctamente', 'success');
+            }
+        }
+        
+        // Delete user
+        function deleteUser(username) {
+            // Check if it's the last admin
+            if (users.find(u => u.username === username).type === 'admin' && 
+                users.filter(u => u.type === 'admin').length === 1) {
+                showNotification('admin-notification', 'No se puede eliminar el último administrador', 'error');
+                return;
+            }
+            
+            if (confirm('¿Está seguro de eliminar este usuario?')) {
+                // Find user index
+                const userIndex = users.findIndex(u => u.username === username);
+                
+                if (userIndex !== -1) {
+                    // Remove user
+                    users.splice(userIndex, 1);
+                    
+                    // Guardar en Firebase
+                    saveUsersToFirebase();
+                    
+                    // Reload table
+                    loadUsersTable();
+                    
+                    showNotification('admin-notification', 'Usuario eliminado correctamente', 'success');
+                }
+            }
+        }
+        
+        // Handle add user
+        function handleAddUser() {
+            const username = document.getElementById('new-user-username').value;
+            const password = document.getElementById('new-user-password').value;
+            const fullName = document.getElementById('new-user-fullname').value;
+            const id = document.getElementById('new-user-id').value;
+            const phone = document.getElementById('new-user-phone').value;
+            const type = document.getElementById('new-user-type').value;
+            
+            // Validate fields
+            if (!username || !password || !fullName || !id || !phone) {
+                showNotification('admin-notification', 'Por favor complete todos los campos', 'error');
+                return;
+            }
+            
+            // Check if username already exists
+            if (users.some(u => u.username === username)) {
+                showNotification('admin-notification', 'Este nombre de usuario ya está en uso', 'error');
+                return;
+            }
+            
+            // Add new user
+            const newUser = {
+                username: username,
+                password: password,
+                fullName: fullName,
+                id: id,
+                phone: phone,
+                type: type
+            };
+            
+            // Add monitor specific fields
+            if (type === 'monitor') {
+                newUser.career = document.getElementById('new-user-career').value;
+                newUser.module = document.getElementById('new-user-module').value;
+                newUser.horario = document.getElementById('new-user-horario').value;
+                newUser.semester = document.getElementById('new-user-semester').value;
+            }
+            
+            users.push(newUser);
+            
+            // Guardar en Firebase
+            saveUsersToFirebase();
+            
+            // Reset form
+            document.getElementById('new-user-username').value = '';
+            document.getElementById('new-user-password').value = '';
+            document.getElementById('new-user-fullname').value = '';
+            document.getElementById('new-user-id').value = '';
+            document.getElementById('new-user-phone').value = '';
+            
+            // Reload table
+            loadUsersTable();
+            
+            showNotification('admin-notification', 'Usuario agregado correctamente', 'success');
+        }
+
+        // Hacer funciones accesibles globalmente
+        window.openEditStudentModal = openEditStudentModal;
+        window.deleteStudent = deleteStudent;
+        window.deleteAttendanceRecord = deleteAttendanceRecord;
+        window.openEditUserModal = openEditUserModal;
+        window.deleteUser = deleteUser;
+    </script>
 </body>
 </html>
